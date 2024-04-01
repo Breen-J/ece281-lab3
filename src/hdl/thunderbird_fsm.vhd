@@ -124,7 +124,7 @@ begin
 	
 	-- OUTPUT LOGIC
 	
-	o_RA <= ( (f_Q(6)) or (f_Q(5)) or (f_Q(4)) or (f_Q(3)) );
+	o_RA <= ( (f_Q(6)) or (f_Q(5)) or (f_Q(4)) or (f_Q(3))  );
 	o_RB <= ( (f_Q(6)) or (f_Q(4)) or (f_Q(3)) );
 	o_RC <= ( (f_Q(6)) or (f_Q(3)) );
 	
@@ -147,7 +147,7 @@ begin
         register_proc : process (i_clk, i_reset)
         begin
             if i_reset = '1' then
-                f_Q <=  x"00";        -- reset state is yellow
+                f_Q <=  "10000000";        -- OFF
             elsif (rising_edge(i_clk)) then
                 f_Q <= f_Q_next;    -- next state becomes current state
             end if;
