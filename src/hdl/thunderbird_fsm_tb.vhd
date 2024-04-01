@@ -109,34 +109,34 @@ begin
         -- sequential timing (RESET TESTING)        
         w_reset <= '1';
         wait for k_clk_period*1;
-          assert o_lights_L = "000" report "Reset Failure" severity failure;
-          assert o_lights_R = "000" report "Reset Failure";
+          assert w_Lights_L = "000" report "Reset Failure" severity failure;
+          assert w_Lights_R = "000" report "Reset Failure";
         
         w_reset <= '0';
         wait for k_clk_period*1;
         
         w_left <= '1'; wait for k_clk_period; 
-            assert  o_lights_L = "001" report "Failure Left, Light 1";
-            assert  o_Lights_R = "000" report "Right Failure: Unwanted Lighting 01";
+            assert  w_Lights_L = "001" report "Failure Left, Light 1";
+            assert  w_Lights_R = "000" report "Right Failure: Unwanted Lighting 01";
             wait for k_clk_period;
-            assert  o_lights_L = "011" report "Failure Left, Light 2";
-            assert  o_Lights_R = "000" report "Right Failure: Unwanted Lighting 02";
+            assert  w_Lights_L = "011" report "Failure Left, Light 2";
+            assert  w_Lights_R = "000" report "Right Failure: Unwanted Lighting 02";
             wait for k_clk_period;
-            assert  o_lights_L = "111" report "Failure Left, Light 3";
-            assert  o_Lights_R = "000" report "Right Failure: Unwanted Lighting 03";
+            assert  w_Lights_L = "111" report "Failure Left, Light 3";
+            assert  w_Lights_R = "000" report "Right Failure: Unwanted Lighting 03";
         
         w_left <= '0';
         wait for k_clk_period*1;
           
         w_right <= '1'; wait for k_clk_period; 
-            assert  o_lights_L = "000" report "Left Failure: Unwanted Lighting 01";
-            assert  o_Lights_R = "100" report "Failure Right, Light 1";
+            assert  w_Lights_L = "000" report "Left Failure: Unwanted Lighting 01";
+            assert  w_Lights_R = "100" report "Failure Right, Light 1";
             wait for k_clk_period;
-            assert  o_lights_L = "000" report "Left Failure: Unwanted Lighting 02";
-            assert  o_Lights_R = "110" report "Failure Right, Light 2";
+            assert  w_Lights_L = "000" report "Left Failure: Unwanted Lighting 02";
+            assert  w_Lights_R = "110" report "Failure Right, Light 2";
             wait for k_clk_period;
-            assert  o_lights_L = "000" report "Left Failure: Unwanted Lighting 03";
-            assert  o_Lights_R = "111" report "Failure Right, Light 3";
+            assert  w_Lights_L = "000" report "Left Failure: Unwanted Lighting 03";
+            assert  w_Lights_R = "111" report "Failure Right, Light 3";
  
         w_right <= '0';
         wait for k_clk_period*1;
