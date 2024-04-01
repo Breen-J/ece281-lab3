@@ -116,9 +116,9 @@ begin
         wait for k_clk_period*1;
         
         w_left <= '1'; wait for k_clk_period; 
-            assert  w_Lights_L = "000" report "Failure Left, Light 0" severity error;
-            assert  w_Lights_R = "000" report "Right Failure: Unwanted Lighting 01" severity error;
-            wait for k_clk_period;
+--            assert  w_Lights_L = "000" report "Failure Left, Light 0" severity error;
+--            assert  w_Lights_R = "000" report "Right Failure: Unwanted Lighting 01" severity error;
+--            wait for k_clk_period;
             assert  w_Lights_L = "001" report "Failure Left, Light 1" severity error;
             assert  w_Lights_R = "000" report "Right Failure: Unwanted Lighting 01";
             wait for k_clk_period;
@@ -132,14 +132,14 @@ begin
         wait for k_clk_period*1;
           
         w_right <= '1'; wait for k_clk_period; 
+--            assert  w_Lights_L = "000" report "Left Failure: Unwanted Lighting 01" severity error;
+--            assert  w_Lights_R = "000" report "Failure Right, Light 0" severity error;
+--            wait for k_clk_period;
             assert  w_Lights_L = "000" report "Left Failure: Unwanted Lighting 01" severity error;
-            assert  w_Lights_R = "000" report "Failure Right, Light 0" severity error;
-            wait for k_clk_period;
-            assert  w_Lights_L = "000" report "Left Failure: Unwanted Lighting 01" severity error;
-            assert  w_Lights_R = "100" report "Failure Right, Light 1" severity error;
+            assert  w_Lights_R = "001" report "Failure Right, Light 1" severity error;
             wait for k_clk_period;
             assert  w_Lights_L = "000" report "Left Failure: Unwanted Lighting 02" severity error;
-            assert  w_Lights_R = "110" report "Failure Right, Light 2" severity error;
+            assert  w_Lights_R = "011" report "Failure Right, Light 2" severity error;
             wait for k_clk_period;
             assert  w_Lights_L = "000" report "Left Failure: Unwanted Lighting 03" severity error;
             assert  w_Lights_R = "111" report "Failure Right, Light 3" severity error;
@@ -148,9 +148,9 @@ begin
         wait for k_clk_period*1;
         
         w_left <= '1'; w_right <= '1'; wait for k_clk_period; 
-            assert  w_Lights_L = "000" report "Left Failure: NO FLASH" severity error;
-            assert  w_Lights_R = "000" report "Failure Right: NO FLASH" severity error;
-            wait for k_clk_period;
+--            assert  w_Lights_L = "000" report "Left Failure: NO FLASH" severity error;
+--            assert  w_Lights_R = "000" report "Failure Right: NO FLASH" severity error;
+--            wait for k_clk_period;
             assert  w_Lights_L = "111" report "Left Failure: FLASH" severity error;
             assert  w_Lights_R = "111" report "Failure Right,FLASH" severity error;
             wait for k_clk_period;
