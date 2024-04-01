@@ -146,6 +146,21 @@ begin
  
         w_right <= '0';
         wait for k_clk_period*1;
+        
+        w_left <= '1'; w_right <= '1'; wait for k_clk_period; 
+            assert  w_Lights_L = "000" report "Left Failure: NO FLASH" severity error;
+            assert  w_Lights_R = "000" report "Failure Right: NO FLASH" severity error;
+            wait for k_clk_period;
+            assert  w_Lights_L = "111" report "Left Failure: FLASH" severity error;
+            assert  w_Lights_R = "111" report "Failure Right,FLASH" severity error;
+            wait for k_clk_period;
+            assert  w_Lights_L = "000" report "Left Failure: NO FLASH RETURN" severity error;
+            assert  w_Lights_R = "000" report "Failure Right: NO FLASH RETURN" severity error;
+            wait for k_clk_period;
+            
+          w_right <= '0'; w_left <= '0';
+          wait for k_clk_period*1;
+          
     
         wait;
     end process;
