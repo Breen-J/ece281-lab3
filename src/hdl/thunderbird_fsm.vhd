@@ -36,18 +36,18 @@
 --|					can be changed by the inputs
 --|					
 --|
---|                 xxx State Encoding key
+--|                 One-Hot State Encoding key
 --|                 --------------------
 --|                  State | Encoding
 --|                 --------------------
---|                  OFF   | 
---|                  ON    | 
---|                  R1    | 
---|                  R2    | 
---|                  R3    | 
---|                  L1    | 
---|                  L2    | 
---|                  L3    | 
+--|                  OFF   | 10000000
+--|                  ON    | 01000000
+--|                  R1    | 00100000
+--|                  R2    | 00010000
+--|                  R3    | 00001000
+--|                  L1    | 00000100
+--|                  L2    | 00000010
+--|                  L3    | 00000001
 --|                 --------------------
 --|
 --|
@@ -86,22 +86,74 @@ library ieee;
   use ieee.numeric_std.all;
  
 entity thunderbird_fsm is 
-  port(
-	
-  );
+  port (
+        i_clk, i_reset  : in    std_logic;
+        i_left, i_right : in    std_logic;
+        o_lights_L      : out   std_logic_vector(2 downto 0);
+        o_lights_R      : out   std_logic_vector(2 downto 0)
+    );
 end thunderbird_fsm;
 
 architecture thunderbird_fsm_arch of thunderbird_fsm is 
 
 -- CONSTANTS ------------------------------------------------------------------
   
+        signal o_RA : STD_LOGIC := '0';
+        signal o_RB : STD_LOGIC := '0';
+        signal o_RC : STD_LOGIC := '0';
+        signal o_LA : STD_LOGIC := '0';
+        signal o_LB : STD_LOGIC := '0';
+        signal o_LC : STD_LOGIC := '0';
+        
+        signal f_Q, f_Q_next : STD_LOGIC_VECTOR (7 downto 0) := x"00";
+                        
+     
 begin
 
 	-- CONCURRENT STATEMENTS --------------------------------------------------------	
+	--NEXT-STATE LOGIC
+	
+	f_Q_next(0) <= (f_Q(0));
+	f_Q_next(1) <= (f_Q(2));
+	f_Q_next(2) <= ( (f_Q(7)) and (i_left) and (not i_right) );
+	f_Q_next(3) <= (f_Q(4));
+	f_Q_next(4) <= (f_Q(5));
+	f_Q_next(5) <= ( (f_Q(7)) and (not i_left) and (i_right) );
+	f_Q_next(6) <= ( (f_Q(7)) and (i_left) and (i_right) );
+	f_Q_next(7) <= ( ( f_Q(7) and (not i_left) and (not i_right) ) or f_Q(6) or f_Q(3) or f_Q(0) ); 
+	
+	-- OUTPUT LOGIC
+	
+	o_RA <= ( (f_Q(6)) or (f_Q(5)) or (f_Q(4)) or (f_Q(3)) );
+	o_RB <= ( (f_Q(6)) or (f_Q(4)) or (f_Q(3)) );
+	o_RC <= ( (f_Q(6)) or (f_Q(3)) );
+	
+	o_lights_R(2) <= o_RC;
+	o_lights_R(1) <= o_RB;
+	o_lights_R(0) <= o_RA;
+	
+	o_LA <= ( (f_Q(6)) or (f_Q(2)) or (f_Q(1)) or (f_Q(0)) ); 
+    o_LB <= ( (f_Q(6)) or (f_Q(1)) or (f_Q(0)) );
+    o_LC <= ( (f_Q(6)) or (f_Q(0)) );
+	
+	o_lights_L(2) <= o_LC;
+	o_lights_L(1) <= o_LB;
+	o_lights_L(0) <= o_LA;
 	
     ---------------------------------------------------------------------------------
 	
 	-- PROCESSES --------------------------------------------------------------------
+    --- state memory w/ asynchronous reset ---
+        register_proc : process (i_clk, i_reset)
+        begin
+            if i_reset = '1' then
+                f_Q <=  x"00";        -- reset state is yellow
+            elsif (rising_edge(i_clk)) then
+                f_Q <= f_Q_next;    -- next state becomes current state
+            end if;
+            
+        end process register_proc;
+    
     
 	-----------------------------------------------------					   
 				  
